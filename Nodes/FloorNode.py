@@ -14,8 +14,7 @@ class FloorNode(Node):
     def sub_inhabitants(self):
         for k in self.__dict__:
             if k[0] == 'x':
-                tas = self.__dict__[k]
-                tas.sub_inhabitants()
+                self.__dict__[k].sub_inhabitants()
 
     # додати квартиру
     def add_apartmet(self, rooms=rint(1, ApartmentNode.room_max)):
