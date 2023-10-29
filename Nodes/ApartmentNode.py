@@ -53,4 +53,12 @@ class ApartmentNode(Node):
             self.inhabs_count -= 1
         return True
 
+    # список жителів цієї квартири
+    def get_habitants(self):
+        out = []
+        for k in self.__dict__:
+            if k[0] == 'x':
+                out.append(self.__dict__[k])
+        return out
+
 

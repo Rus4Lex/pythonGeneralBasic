@@ -25,6 +25,8 @@ class FloorNode(Node):
         self.apartmens_count += 1
         return True
 
+
+    #видалити квартири (якщо у квартирах є жителі вони не видаляються)
     def sub_apartment(self, ids: list):
         out = True
         for apartment in ids:
@@ -33,4 +35,25 @@ class FloorNode(Node):
                 del self.__dict__[hex(apartment)[1:]]
             else:
                 out = False
+        return out
+
+
+    # повернення списку квартир за заданими параметрами
+    def get_apartments(self, inhabs=None, rooms=None):
+        out = []
+        for k in self.__dict__:
+            if k[0] == 'x':
+                tas = self.__dict__[k]
+                if inhabs is None and rooms is None:
+                    out.append(tas)
+                elif inhabs is None and rooms is not None:
+                    if tas.rooms_count == rooms:
+                        out.append(tas)
+                elif inhabs is not None and rooms is None:
+                    if tas.inhabs_count == inhabs:
+                        out.append(tas)
+                elif inhabs is not None and rooms is not None:
+                    if (tas.inhabs_count == inhabs) and (tas.rooms_count == rooms):
+                        out.append(tas)
+
         return out
