@@ -12,7 +12,10 @@ class FloorNode(Node):
 
     # виселити поверх
     def sub_inhabitants(self):
-        pass
+        for k in self.__dict__:
+            if k[0] == 'x':
+                tas = self.__dict__[k]
+                tas.sub_inhabitants()
 
     # додати квартиру
     def add_apartmet(self, rooms=rint(1, ApartmentNode.room_max)):

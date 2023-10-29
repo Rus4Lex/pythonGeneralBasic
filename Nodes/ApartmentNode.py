@@ -42,9 +42,11 @@ class ApartmentNode(Node):
 
 
     # виселити мешканців
-    def sub_inhabitants(self, ids: list):
+    def sub_inhabitants(self, ids=None):
         if self.inhabs_count == 0:
             return False #room is empty
+        if ids is None:# if ids is None delete all inhabitants
+            ids = [self.__dict__[x].id for x in self.__dict__ if x[0] == 'x']
         for k in ids:
             tit = self.__dict__[hex(k)[1:]]
             tit.parent = self.root
