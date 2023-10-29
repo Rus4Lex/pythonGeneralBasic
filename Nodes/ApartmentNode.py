@@ -23,13 +23,15 @@ class ApartmentNode(Node):
 
     # видалити кімнати
     def sub_rooms(self, cnt):
+        if self.rooms_count - cnt < self.inhabs_count:#жителів не може бути більше кімнат
+            return False
         self.__checkMinMax(cnt)
         self.rooms_count -= cnt
         return True
 
     # поселити мешканця
     def add_inhabitant(self, inhab):
-        if self.rooms_count == self.inhabs_count:
+        if self.rooms_count >= self.inhabs_count:
             return False # maximum 1 inhab 1 room
         else:
             tit = inhab
