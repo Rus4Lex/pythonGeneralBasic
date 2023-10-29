@@ -3,18 +3,18 @@ from InhabitantNode import *
 class ApartmentNode(Node):
 
     room_max = 4
-    def __init__(self, id, root):
+    def __init__(self,root):
         super().__init__(root)
-        self.id = id
+        self.id = self.root.get_maxID()
         self.rooms_count: int = 1
         self.inhabs_count: int = 0
-
 
     def __checkMinMax(self, cnt):
         if self.rooms_count + cnt < 1:
             self.rooms_count = 1
         if self.rooms_count + cnt > ApartmentNode.room_max:
             self.rooms_count = ApartmentNode.room_max
+
     # додати кімнати
     def add_rooms(self, cnt):
         self.__checkMinMax(cnt)
@@ -34,7 +34,7 @@ class ApartmentNode(Node):
         else:
             tit = inhab
             tit.parent = self
-            self.__dict__[hex(self.inhabs_count)[1:]] = tit
+            self.__dict__[hex(tit.id)[1:]] = tit
             self.inhabs_count += 1
         return True
 
