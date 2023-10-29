@@ -18,6 +18,7 @@ class HomeNode(Node):
         if self.floor_count >= HomeNode.floor_max:
             return False
         tfn = FloorNode(self)
+        tfn.parent = self
         # додає поверх із випадковою кількістю квартир та кімнат в них
         if rand:
             for i in range(rint(1, HomeNode.floor_max)):

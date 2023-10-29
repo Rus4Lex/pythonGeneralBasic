@@ -36,7 +36,7 @@ class FloorNode(Node):
             if tfn.inhabs_count == 0:
                 del self.__dict__[hex(apartment)[1:]]
             else:
-                out = False
+                out = False# якась із квартир не видалилась
         return out
 
 
