@@ -1,5 +1,5 @@
 from Nodes.Node import *
-
+#мешканець
 
 class InhabitantNode(Node):
     def __init__(self, pib, age, root):
