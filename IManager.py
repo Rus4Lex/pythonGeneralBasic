@@ -7,6 +7,8 @@ class IManager(SuperInterface):
         self.ui_home = Interface(self)  # home interface
         self.ui_home.add("adrand")
         self.ui_home.add_help("створити пустий дім з випадковими квартирами")
+        self.ui_home.add("fremove")
+        self.ui_home.add_help("видалити список поверхів")
 
         self.ui_floor = Interface(self)  # floor interface
         self.ui_apart = Interface(self)  # apartment interface
@@ -27,5 +29,5 @@ class IManager(SuperInterface):
 
 
     def fremove(self):
-        pass
+        return "Floors removed!"
 
