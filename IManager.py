@@ -10,7 +10,7 @@ class IManager(SuperInterface):
         self.ui_home.add_help("створити пустий дім з випадковими квартирами.")
         self.ui_home.add("frem")
         self.ui_home.add_help("видалити список поверхів.")
-        self.ui_home.add("frs")
+        self.ui_home.add("flist")
         self.ui_home.add_help("показати список поверхів.")
         self.ui_home.add("fadd")
         self.ui_home.add_help("додати поверх з одною квартирою.")
@@ -23,6 +23,8 @@ class IManager(SuperInterface):
         self.ui_floor.help += "---FLOOR MENU---\n"
         self.ui_floor.onExit = self.ui_home.info
         self.ui_floor.add("qadd")
+        self.ui_floor.add_help("додати квартиру на поверсі.")
+        self.ui_floor.add("qlist")
         self.ui_floor.add_help("додати квартиру на поверсі.")
 
         self.ui_apart = Interface(self)  # apartment interface
@@ -75,7 +77,7 @@ class IManager(SuperInterface):
 
         return res
 
-    def frs(self):
+    def flist(self):
         floors = self.main_home.get_floors()
         if len(floors) == 0:
             return "Дім пустий."
@@ -126,7 +128,7 @@ class IManager(SuperInterface):
 
     def qadd(self):
         if self.__current_floor.apartmens_count > FloorNode.apartmens_max:
-            return "Помилка забагато квартир на поверсі!"
+            return f"Помилка забагато квартир на поверсі!\nмаксисмум = {FloorNode.apartmens_max}."
         rooms = 0
         while True:
             inp = input("Введіть нуль для виходу або\nкількість кімнат\n>>> ")
@@ -141,3 +143,11 @@ class IManager(SuperInterface):
                     break
         self.__current_floor.add_apartmet(rooms)
         return f"Квартиру id = {hex(self.main_home.maxID)} додано."
+
+    def qlist(self):
+        cnt = 1
+        out = ""
+        alist = self.__current_floor.get_apartments()
+        for i in alist:
+            out += f"квартира {cnt}: id = {i.id}, {i.rooms_count} кімнат"
+            cnt += 1

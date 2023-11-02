@@ -10,7 +10,7 @@ class SuperInterface:
         """"Remove list of floors"""
 
     @abstractmethod
-    def frs(self) -> str:
+    def flist(self) -> str:
         """Show all floors"""
 
     @abstractmethod
@@ -28,5 +28,9 @@ class SuperInterface:
     @abstractmethod
     def qadd(self) -> str:
         """Add Apartment to floor with one room"""
+
+    @abstractmethod
+    def qlist(self) -> str:
+        """Show list of apartments with rooms count"""
 
 
