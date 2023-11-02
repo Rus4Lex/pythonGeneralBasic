@@ -9,5 +9,8 @@ class SuperInterface:
     def frem(self):
         """"Remove list of floors"""
 
+    @abstractmethod
+    def frs(self):
+        """Show all floors"""
 
 

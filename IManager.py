@@ -9,6 +9,8 @@ class IManager(SuperInterface):
         self.ui_home.add_help("створити пустий дім з випадковими квартирами")
         self.ui_home.add("frem")
         self.ui_home.add_help("видалити список поверхів")
+        self.ui_home.add("frs")
+        self.ui_home.add_help("показати список поверхів")
 
         self.ui_floor = Interface(self)  # floor interface
         self.ui_apart = Interface(self)  # apartment interface
@@ -25,15 +27,11 @@ class IManager(SuperInterface):
     def adrand(self):
         self.main_home.new_rand()
 
-        return "Apartments and floors created."
+        return "Рандомні поверхи з квартирами створено."
 
 
     def frem(self):
-        cnt = 1
         floors = self.main_home.get_floors()
-        for i in floors:
-            print(f"floor {cnt}: id={hex(i.id)}")
-            cnt += 1
         sfloors = []
         while True:
             inp = input("Введіть нуль для виходу або\nномера поверхів які ви хочете видалити\n>>> ")
@@ -57,4 +55,18 @@ class IManager(SuperInterface):
 
 
         return res
+
+    def frs(self):
+        floors = self.main_home.get_floors()
+        if len(floors) == 0:
+            return "Дім пустий."
+        out = ""
+        cnt = 1
+
+        for i in floors:
+            out += f"floor {cnt}: id={hex(i.id)}\n"
+            cnt += 1
+
+        return out
+
 
