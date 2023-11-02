@@ -4,7 +4,6 @@ from SuperInterface import SuperInterface
 
 class IManager(SuperInterface):
     def __init__(self):
-        self.ui_datbe = Interface(self)  # database interface
         self.ui_home = Interface(self)  # home interface
         self.ui_home.add("adrand")
         self.ui_home.add_help("adrand - створити пустий дім з випадковими квартирами")
@@ -13,6 +12,8 @@ class IManager(SuperInterface):
         self.ui_apart = Interface(self)  # apartment interface
         self.ui_inhub = Interface(self)  # inhabitant interface
         self.ui_infos = Interface(self)  # statistics interface
+
+        self.ui_datbe = Interface(self)  # database interface
 
         self.main_home = HomeNode()
 
