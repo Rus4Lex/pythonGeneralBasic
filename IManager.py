@@ -7,7 +7,7 @@ class IManager(SuperInterface):
         self.ui_home = Interface(self)  # home interface
         self.ui_home.add("adrand")
         self.ui_home.add_help("створити пустий дім з випадковими квартирами")
-        self.ui_home.add("fremove")
+        self.ui_home.add("frem")
         self.ui_home.add_help("видалити список поверхів")
 
         self.ui_floor = Interface(self)  # floor interface
@@ -28,7 +28,7 @@ class IManager(SuperInterface):
         return "Apartments and floors created."
 
 
-    def fremove(self):
+    def frem(self):
         cnt = 1
         floors = self.main_home.get_floors()
         for i in floors:
@@ -47,11 +47,13 @@ class IManager(SuperInterface):
                     print("Помилка\nповерх уже додано!")
                 else:
                     sfloors.append(floors[inp-1])
-        res = self.main_home.del_floors(sfloors)
-        if res:
-            res = "Усі задані поверхи видалено."
-        else:
-            res = "Не всі поверхи видалено!"
+        res = "Нічого не вибрано."
+        if len(sfloors) > 0:
+            res, frs, drs = self.main_home.del_floors(sfloors)
+            if res:
+                res = "Усі задані поверхи видалено.\nid = "+"\nid = ".join(drs)
+            else:
+                res = "Не всі поверхи видалено!\nid = "+"\nid = ".join(frs)
 
 
         return res

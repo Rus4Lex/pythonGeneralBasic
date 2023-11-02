@@ -38,12 +38,16 @@ class HomeNode(Node):
     # видалити поверхи (якщо на поверсі є жителі вони не видаляються)
     def del_floors(self, ids: list):
         out = True  # все гаразд
+        ndel = []  # поверхи що не видалились
+        tdel = []  # поверхи що видалились
         for k in ids:  # floors walker
             if self.__dict__[hex(k.id)[1:]].inhabs_count == 0:
+                tdel.append(hex(k.id)[1:])
                 del self.__dict__[hex(k.id)[1:]]
             else:
+                ndel.append(hex(k.id)[1:])
                 out = False  # якийсь із поверхів не видалився
-        return out
+        return out, ndel, tdel
 
 
     def get_floors(self):

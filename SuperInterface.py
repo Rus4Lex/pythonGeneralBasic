@@ -6,7 +6,7 @@ class SuperInterface:
         """Add a random floors, apartments and rooms"""
 
     @abstractmethod
-    def fremove(self):
+    def frem(self):
         """"Remove list of floors"""
 
 
