@@ -10,3 +10,9 @@ class Node:
         for k in self.__dict__:
             if k != "id" or k != "parent":
                 del(self.__dict__[k])
+
+    def sizeof(self):
+        out = 0
+        
+
+        return out
