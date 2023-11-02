@@ -9,13 +9,13 @@ class Interface:
         self.donor = donor
         self.onExit = None
         self.commands = {}
-        self.help = ""
-        self.add_help("exit - exit from program.")
-        self.add_help("help - print help strings.")
-        self.add_help("cls - clear text in console.")
+        self.help = "exit - exit from program.\n"
+
 
         self.add("help", self.info)
+        self.add_help("print help strings.")
         self.add("cls", self.cls)
+        self.add_help("clear text in console.")
 
     def cls(self):
         #os.system("cls")
@@ -25,7 +25,7 @@ class Interface:
         return self.help
 
     def add_help(self, text):
-        self.help += text+"\n"
+        self.help += f"{list(self.commands.keys())[-1]} - "+text+"\n"
 
     def add(self, name, func=None):
 
