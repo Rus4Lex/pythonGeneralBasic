@@ -9,9 +9,9 @@ class ApartmentNode(Node):
         self.rooms_count: int = 1
 
     def __checkMinMax(self, cnt):
-        if self.rooms_count + cnt < 1:
+        if (self.rooms_count + cnt) < 1:
             self.rooms_count = 1
-        if self.rooms_count + cnt > ApartmentNode.room_max:
+        if (self.rooms_count + cnt) > ApartmentNode.room_max:
             self.rooms_count = ApartmentNode.room_max
 
     # додати кімнати

@@ -141,7 +141,7 @@ class IManager(SuperInterface):
                 else:
                     rooms = inp-1
                     break
-        self.__current_floor.add_apartmet(rooms)
+        self.__current_floor.add_apartment(rooms)
         return f"Квартиру id = {hex(self.main_home.maxID)} додано."
 
     def qlist(self):
@@ -149,5 +149,7 @@ class IManager(SuperInterface):
         out = ""
         alist = self.__current_floor.get_apartments()
         for i in alist:
-            out += f"квартира {cnt}: id = {i.id}, {i.rooms_count} кімнат"
+            out += f"квартира {cnt}: id = {hex(i.id)}, кімнат {i.rooms_count}\n"
             cnt += 1
+
+        return out

@@ -27,10 +27,10 @@ class HomeNode(Node):
         # додає поверх із випадковою кількістю квартир та кімнат в них
         if rand:
             for i in range(randint(1, FloorNode.apartmens_max)):
-                tfn.add_apartmet()
+                tfn.add_apartment()
         # додає поверх із одною квартирою з випадковою кількістю кімнат
         else:
-            tfn.add_apartmet(0)
+            tfn.add_apartment(0)
         self.__dict__[hex(tfn.id)[1:]] = tfn
         self.floor_count += 1
         return True
