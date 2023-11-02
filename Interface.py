@@ -18,8 +18,8 @@ class Interface:
         self.add("cls", self.cls)
 
     def cls(self):
-        os.system("cls")
-        return ""
+        #os.system("cls")
+        return "{0}".format(100*'\n')
 
     def info(self):
         return self.help
