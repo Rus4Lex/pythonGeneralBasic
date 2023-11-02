@@ -22,6 +22,8 @@ class IManager(SuperInterface):
         self.ui_floor = Interface(self)  # floor interface
         self.ui_floor.help += "---FLOOR MENU---\n"
         self.ui_floor.onExit = self.ui_home.info
+        self.ui_floor.add("qadd")
+        self.ui_floor.add_help("додати квартиру на поверсі.")
 
         self.ui_apart = Interface(self)  # apartment interface
         self.ui_apart.help += "---APARTMENT MENU---\n"
@@ -102,23 +104,40 @@ class IManager(SuperInterface):
 
 
     def efloor(self):
+        res = "Нічого не вибрано."
         floors = self.main_home.get_floors()
         while True:
             inp = input("Введіть нуль для виходу або\nномер поверху на який ви хочете зайти\n>>> ")
             if inp.isdigit():
                 inp = int(inp)
                 if inp == 0:
-                    break
+                    return res
                 elif inp > len(floors):
                     print("Помилка\nнемає такого поверху!")
                 else:
                     self.__current_floor = floors[inp - 1]
                     break
-        res = "Нічого не вибрано."
+
         if self.__current_floor is not None:
             res = self.ui_floor.walk()
             self.__current_floor = None
 
         return res
 
-
+    def qadd(self):
+        if self.__current_floor.apartmens_count > FloorNode.apartmens_max:
+            return "Помилка забагато квартир на поверсі!"
+        rooms = 0
+        while True:
+            inp = input("Введіть нуль для виходу або\nкількість кімнат\n>>> ")
+            if inp.isdigit():
+                inp = int(inp)
+                if inp == 0:
+                    break
+                elif inp > ApartmentNode.room_max:
+                    print(f"Помилка\nкімнат забагато, максимум = {ApartmentNode.room_max}!")
+                else:
+                    rooms = inp-1
+                    break
+        self.__current_floor.add_apartmet(rooms)
+        return f"Квартиру id = {hex(self.main_home.maxID)} додано."
