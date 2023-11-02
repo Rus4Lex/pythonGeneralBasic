@@ -13,4 +13,8 @@ class SuperInterface:
     def frs(self):
         """Show all floors"""
 
+    @abstractmethod
+    def fadd(self):
+        """Adding one floor inside one apartment have one room"""
+
 

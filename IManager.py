@@ -11,6 +11,8 @@ class IManager(SuperInterface):
         self.ui_home.add_help("видалити список поверхів")
         self.ui_home.add("frs")
         self.ui_home.add_help("показати список поверхів")
+        self.ui_home.add("fadd")
+        self.ui_home.add_help("додати поверх з одною квартирою")
 
         self.ui_floor = Interface(self)  # floor interface
         self.ui_apart = Interface(self)  # apartment interface
@@ -68,5 +70,10 @@ class IManager(SuperInterface):
             cnt += 1
 
         return out
+
+
+    def fadd(self):
+        self.main_home.add_floor()
+        return "Поверх з квартирою створено."
 
 
