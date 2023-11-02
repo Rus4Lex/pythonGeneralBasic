@@ -7,6 +7,7 @@ class InhabitantNode(Node):
         self.id = self.root.get_maxID()
         self.__PIB = pib
         self.__Age = age
+        del self.inhabs_count
 
     def edit(self, pib, age):
         self.__PIB = pib

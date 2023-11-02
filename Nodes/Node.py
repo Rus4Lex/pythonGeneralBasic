@@ -5,6 +5,7 @@ class Node:
         self.id: int = 0
         self.root: Node = root
         self.parent: Node = None
+        self.inhabs_count: int = 0
 
     def clear(self):
         for k in self.__dict__:
@@ -13,6 +14,6 @@ class Node:
 
     def sizeof(self):
         out = 0
-        
+
 
         return out

@@ -1,5 +1,5 @@
 from .ApartmentNode import *
-from random import randint as rint
+import random
 #поверх
 class FloorNode(Node):
 
@@ -17,14 +17,15 @@ class FloorNode(Node):
                 self.__dict__[k].sub_inhabitants()
 
     # додати квартиру
-    def add_apartmet(self, rooms=rint(1, ApartmentNode.room_max)):
+    def add_apartmet(self, rooms=random.randint(1, ApartmentNode.room_max)):
         if self.apartmens_count >= FloorNode.apartmens_max:
             return False
-        tfn = ApartmentNode(self.root)
-        tfn.parent = self
-        tfn.add_rooms(rooms)
-        self.__dict__[hex(self.apartmens_count)[1:]] = tfn
+        tan = ApartmentNode(self.root)
+        tan.parent = self
+        tan.add_rooms(rooms)
+        self.__dict__[hex(tan.id)[1:]] = tan
         self.apartmens_count += 1
+        self.root.apartmens_count += 1
         return True
 
 
@@ -35,6 +36,8 @@ class FloorNode(Node):
             tfn = self.__dict__[hex(apartment)[1:]]
             if tfn.inhabs_count == 0:
                 del self.__dict__[hex(apartment)[1:]]
+                self.apartmens_count -= 1
+                self.root.apartmens_count -= 1
             else:
                 out = False# якась із квартир не видалилась
         return out
@@ -46,15 +49,15 @@ class FloorNode(Node):
         for k in self.__dict__:
             if k[0] == 'x':
                 tas = self.__dict__[k]
-                if inhabs is None and rooms is None:
+                if inhabs is None and rooms is None:# all
                     out.append(tas)
-                elif inhabs is None and rooms is not None:
+                elif inhabs is None and rooms is not None:# room count
                     if tas.rooms_count == rooms:
                         out.append(tas)
-                elif inhabs is not None and rooms is None:
+                elif inhabs is not None and rooms is None:# inhabs count
                     if tas.inhabs_count == inhabs:
                         out.append(tas)
-                elif inhabs is not None and rooms is not None:
+                elif inhabs is not None and rooms is not None:# rooms and inhabs count
                     if (tas.inhabs_count == inhabs) and (tas.rooms_count == rooms):
                         out.append(tas)
 

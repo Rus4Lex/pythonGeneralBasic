@@ -19,8 +19,8 @@ class IManager(SuperInterface):
         self.ui_home.walk()
         # self.main_database = None
 
-    def addrand(self):
-        print("adding")
+    def adrand(self):
+        self.main_home.new_rand()
 
         return ""
 

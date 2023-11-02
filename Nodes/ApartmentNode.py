@@ -3,11 +3,10 @@ from .InhabitantNode import *
 class ApartmentNode(Node):
 
     room_max = 4
-    def __init__(self,root):
+    def __init__(self, root):
         super().__init__(root)
         self.id = self.root.get_maxID()
         self.rooms_count: int = 1
-        self.inhabs_count: int = 0
 
     def __checkMinMax(self, cnt):
         if self.rooms_count + cnt < 1:
@@ -38,6 +37,8 @@ class ApartmentNode(Node):
             tit.parent = self
             self.__dict__[hex(tit.id)[1:]] = tit
             self.inhabs_count += 1
+            self.parent.inhabs_count += 1
+            self.root.inhabs_count += 1
         return True
 
 
@@ -53,6 +54,8 @@ class ApartmentNode(Node):
             self.root.outrooms.append(tit)
             del self.__dict__[hex(k)[1:]]
             self.inhabs_count -= 1
+            self.parent.inhabs_count -= 1
+            self.root.inhabs_count -= 1
         return True
 
     # список жителів цієї квартири
