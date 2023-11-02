@@ -29,5 +29,30 @@ class IManager(SuperInterface):
 
 
     def fremove(self):
-        return "Floors removed!"
+        cnt = 1
+        floors = self.main_home.get_floors()
+        for i in floors:
+            print(f"floor {cnt}: id={hex(i.id)}")
+            cnt += 1
+        sfloors = []
+        while True:
+            inp = input("Введіть нуль для виходу або\nномера поверхів які ви хочете видалити\n>>> ")
+            if inp.isdigit():
+                inp = int(inp)
+                if inp == 0:
+                    break
+                elif inp > len(floors):
+                    print("Помилка\nнемає такого поверху!")
+                elif floors[inp-1] in sfloors:
+                    print("Помилка\nповерх уже додано!")
+                else:
+                    sfloors.append(floors[inp-1])
+        res = self.main_home.del_floors(sfloors)
+        if res:
+            res = "Усі задані поверхи видалено."
+        else:
+            res = "Не всі поверхи видалено!"
+
+
+        return res
 
