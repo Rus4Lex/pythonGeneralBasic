@@ -6,13 +6,15 @@ class IManager(SuperInterface):
     def __init__(self):
         self.ui_home = Interface(self)  # home interface
         self.ui_home.add("adrand")
-        self.ui_home.add_help("створити пустий дім з випадковими квартирами")
+        self.ui_home.add_help("створити пустий дім з випадковими квартирами.")
         self.ui_home.add("frem")
-        self.ui_home.add_help("видалити список поверхів")
+        self.ui_home.add_help("видалити список поверхів.")
         self.ui_home.add("frs")
-        self.ui_home.add_help("показати список поверхів")
+        self.ui_home.add_help("показати список поверхів.")
         self.ui_home.add("fadd")
-        self.ui_home.add_help("додати поверх з одною квартирою")
+        self.ui_home.add_help("додати поверх з одною квартирою.")
+        self.ui_home.add("delete_all_in_home")
+        self.ui_home.add_help("очистити будинок!")
 
         self.ui_floor = Interface(self)  # floor interface
         self.ui_apart = Interface(self)  # apartment interface
@@ -75,5 +77,14 @@ class IManager(SuperInterface):
     def fadd(self):
         self.main_home.add_floor()
         return "Поверх з квартирою створено."
+
+
+    def delete_all_in_home(self):  # довга назва для запобігання випадковому вводу
+        inp = input("Ви впевнені, що хочете видалити всі поверхи та мешканців у них?\nдля підтвердження натисніть 'Enter'\nдля відміни будь'який символ та підтвердіть\n>>> ")
+        if len(inp) == 0:
+            self.main_home = HomeNode()
+            return "Дім очищено."
+        else:
+            return "Операцію відмінено."
 
 

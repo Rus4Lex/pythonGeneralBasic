@@ -17,4 +17,7 @@ class SuperInterface:
     def fadd(self):
         """Adding one floor inside one apartment have one room"""
 
+    def delete_all_in_home(self):
+        """Delete all floors and inhabitants there"""
+
 
