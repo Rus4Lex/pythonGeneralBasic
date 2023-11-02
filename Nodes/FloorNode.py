@@ -25,7 +25,7 @@ class FloorNode(Node):
             return False
         tan = ApartmentNode(self.root)
         tan.parent = self
-        tan.add_rooms(rooms)
+        tan.set_rooms(rooms)
         self.__dict__[hex(tan.id)[1:]] = tan
         self.apartmens_count += 1
         self.root.apartmens_count += 1

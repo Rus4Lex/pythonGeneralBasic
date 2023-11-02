@@ -15,9 +15,9 @@ class ApartmentNode(Node):
             self.rooms_count = ApartmentNode.room_max
 
     # додати кімнати
-    def add_rooms(self, cnt):
+    def set_rooms(self, cnt):
         self.__checkMinMax(cnt)
-        self.rooms_count += cnt
+        self.rooms_count = cnt
         return True
 
     # видалити кімнати
