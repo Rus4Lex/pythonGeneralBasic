@@ -8,23 +8,14 @@ class ApartmentNode(Node):
         self.id = self.root.get_maxID()
         self.rooms_count: int = 1
 
-    def __checkMinMax(self, cnt):
-        if (self.rooms_count + cnt) < 1:
-            self.rooms_count = 1
-        if (self.rooms_count + cnt) > ApartmentNode.room_max:
-            self.rooms_count = ApartmentNode.room_max
-
     # додати кімнати
     def set_rooms(self, cnt):
-        self.__checkMinMax(cnt)
-        self.rooms_count = cnt
-        return True
+        self.rooms_count = (cnt % ApartmentNode.room_max)+1
 
     # видалити кімнати
     def sub_rooms(self, cnt):
         if self.rooms_count - cnt < self.inhabs_count:#жителів не може бути більше кімнат
             return False
-        self.__checkMinMax(cnt)
         self.rooms_count -= cnt
         return True
 

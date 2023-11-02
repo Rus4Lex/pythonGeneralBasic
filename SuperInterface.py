@@ -2,7 +2,7 @@ from abc import abstractmethod
 class SuperInterface:
 
     @abstractmethod
-    def adrand(self) -> str:
+    def fradd(self) -> str:
         """Add a random floors, apartments and rooms"""
 
     @abstractmethod
@@ -22,7 +22,7 @@ class SuperInterface:
         """Delete all floors and inhabitants there"""
 
     @abstractmethod
-    def efloor(self) -> str:
+    def fenter(self) -> str:
         """Enter to floor menu section"""
 
     @abstractmethod

@@ -20,7 +20,7 @@ class FloorNode(Node):
     # додати квартиру
     def add_apartment(self, rooms=None):
         if rooms is None:
-            rooms = randint(0, ApartmentNode.room_max)
+            rooms = randint(1, ApartmentNode.room_max)
         if self.apartmens_count >= FloorNode.apartmens_max:
             return False
         tan = ApartmentNode(self.root)

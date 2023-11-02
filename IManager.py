@@ -6,7 +6,7 @@ class IManager(SuperInterface):
     def __init__(self):
         self.ui_home = Interface(self)  # home interface
         self.ui_home.help += "---HOME MENU---\n"
-        self.ui_home.add("adrand")
+        self.ui_home.add("fradd")
         self.ui_home.add_help("створити пустий дім з випадковими квартирами.")
         self.ui_home.add("frem")
         self.ui_home.add_help("видалити список поверхів.")
@@ -14,7 +14,7 @@ class IManager(SuperInterface):
         self.ui_home.add_help("показати список поверхів.")
         self.ui_home.add("fadd")
         self.ui_home.add_help("додати поверх з одною квартирою.")
-        self.ui_home.add("efloor")
+        self.ui_home.add("fenter")
         self.ui_home.add_help("увійти на поверх")
         self.ui_home.add("delete_all_in_home")
         self.ui_home.add_help("очистити будинок!")
@@ -45,7 +45,7 @@ class IManager(SuperInterface):
         self.__current_apartment = None
         self.__current_inhabitant = None
 
-    def adrand(self):
+    def fradd(self):
         self.main_home.new_rand()
 
         return "Рандомні поверхи з квартирами створено."
@@ -105,7 +105,7 @@ class IManager(SuperInterface):
             return "Операцію відмінено."
 
 
-    def efloor(self):
+    def fenter(self):
         res = "Нічого не вибрано."
         floors = self.main_home.get_floors()
         while True:
@@ -141,6 +141,8 @@ class IManager(SuperInterface):
                 else:
                     rooms = inp-1
                     break
+            else:
+                print("Помилка вводу!")
         self.__current_floor.add_apartment(rooms)
         return f"Квартиру id = {hex(self.main_home.maxID)} додано."
 
