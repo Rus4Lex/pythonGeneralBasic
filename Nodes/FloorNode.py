@@ -41,6 +41,9 @@ class FloorNode(Node):
                 self.root.apartmens_count -= 1
             else:
                 out = False# якась із квартир не видалилась
+            if self.apartmens_count == 0:  # якщо видалити всі квартири з поверху він автоматично видаляється
+                iid = hex(self.parent.id)[1:]
+                del self.root.__dict__[iid]
         return out
 
 
