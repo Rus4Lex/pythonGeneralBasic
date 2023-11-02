@@ -1,9 +1,15 @@
 from .ApartmentNode import *
-import random
+from random import randint
 #поверх
 class FloorNode(Node):
 
     apartmens_max = 10
+
+
+    @staticmethod
+    def getran():
+        rnum = randint(1, ApartmentNode.room_max)
+        return rnum
     def __init__(self, root):
         super().__init__(root)
         self.id = self.root.get_maxID()
@@ -17,7 +23,7 @@ class FloorNode(Node):
                 self.__dict__[k].sub_inhabitants()
 
     # додати квартиру
-    def add_apartmet(self, rooms=random.randint(1, ApartmentNode.room_max)):
+    def add_apartmet(self, rooms=getran()):
         if self.apartmens_count >= FloorNode.apartmens_max:
             return False
         tan = ApartmentNode(self.root)
