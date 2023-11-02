@@ -35,10 +35,15 @@ class HomeNode(Node):
         self.floor_count += 1
         return True
 
-    def del_floor(self):
-        for k in self.__dict__:#floors walker
-            if k[0] == 'x':
-                pass
+    def del_floors(self, ids:list):
+        out = True
+        for k in ids:#floors walker
+            if self.__dict__[hex(k.id)[1:]].inhabs_count == 0:
+                del self.__dict__[hex(k.id)[1:]]
+            else:
+                out = False
+        return out
+
 
 
 

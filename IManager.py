@@ -22,5 +22,5 @@ class IManager(SuperInterface):
     def adrand(self):
         self.main_home.new_rand()
 
-        return ""
+        return "Apartments and floors created."
 
