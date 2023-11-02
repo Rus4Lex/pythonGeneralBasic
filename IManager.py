@@ -24,3 +24,7 @@ class IManager(SuperInterface):
 
         return "Apartments and floors created."
 
+
+    def fremove(self):
+        pass
+
