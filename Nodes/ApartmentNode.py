@@ -1,4 +1,4 @@
-from InhabitantNode import *
+from .InhabitantNode import *
 #квартира
 class ApartmentNode(Node):
 

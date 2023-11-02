@@ -1,4 +1,4 @@
-from ApartmentNode import *
+from .ApartmentNode import *
 from random import randint as rint
 #поверх
 class FloorNode(Node):

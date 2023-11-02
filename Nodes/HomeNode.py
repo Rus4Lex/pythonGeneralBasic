@@ -1,4 +1,4 @@
-from FloorNode import *
+from .FloorNode import *
 
 
 

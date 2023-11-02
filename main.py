@@ -1,9 +1,8 @@
-from Interface import Interface
-
+from  IManager import IManager
 
 
 
 
 if __name__ == '__main__':
-    pass
+    manManager = IManager()
 

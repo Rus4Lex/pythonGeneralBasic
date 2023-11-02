@@ -1,4 +1,4 @@
-from Nodes.Node import *
+from .Node import *
 #мешканець
 
 class InhabitantNode(Node):
