@@ -5,6 +5,7 @@ from SuperInterface import SuperInterface
 class IManager(SuperInterface):
     def __init__(self):
         self.ui_home = Interface(self)  # home interface
+        self.ui_home.help += "---HOME MENU---\n"
         self.ui_home.add("adrand")
         self.ui_home.add_help("створити пустий дім з випадковими квартирами.")
         self.ui_home.add("frem")
@@ -13,12 +14,19 @@ class IManager(SuperInterface):
         self.ui_home.add_help("показати список поверхів.")
         self.ui_home.add("fadd")
         self.ui_home.add_help("додати поверх з одною квартирою.")
+        self.ui_home.add("efloor")
+        self.ui_home.add_help("увійти на поверх")
         self.ui_home.add("delete_all_in_home")
         self.ui_home.add_help("очистити будинок!")
 
         self.ui_floor = Interface(self)  # floor interface
+        self.ui_floor.help += "---FLOOR MENU---\n"
+        self.ui_floor.onExit = self.ui_home.info
+
         self.ui_apart = Interface(self)  # apartment interface
-        self.ui_inhub = Interface(self)  # inhabitant interface
+        self.ui_apart.help += "---APARTMENT MENU---\n"
+        self.ui_inhab = Interface(self)  # inhabitant interface
+        self.ui_inhab.help += "---INHABITANT MENU---\n"
         self.ui_infos = Interface(self)  # statistics interface
 
         self.ui_datbe = Interface(self)  # database interface
@@ -27,6 +35,11 @@ class IManager(SuperInterface):
 
         self.ui_home.walk()
         # self.main_database = None
+
+
+        self.__current_floor = None
+        self.__current_apartment = None
+        self.__current_inhabitant = None
 
     def adrand(self):
         self.main_home.new_rand()
@@ -86,5 +99,26 @@ class IManager(SuperInterface):
             return "Дім очищено."
         else:
             return "Операцію відмінено."
+
+
+    def efloor(self):
+        floors = self.main_home.get_floors()
+        while True:
+            inp = input("Введіть нуль для виходу або\nномер поверху на який ви хочете зайти\n>>> ")
+            if inp.isdigit():
+                inp = int(inp)
+                if inp == 0:
+                    break
+                elif inp > len(floors):
+                    print("Помилка\nнемає такого поверху!")
+                else:
+                    self.__current_floor = floors[inp - 1]
+                    break
+        res = "Нічого не вибрано."
+        if self.__current_floor is not None:
+            res = self.ui_floor.walk()
+            self.__current_floor = None
+
+        return res
 
 

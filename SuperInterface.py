@@ -20,4 +20,7 @@ class SuperInterface:
     def delete_all_in_home(self):
         """Delete all floors and inhabitants there"""
 
+    def efloor(self):
+        """Enter to floor menu section"""
+
 
