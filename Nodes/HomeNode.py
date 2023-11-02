@@ -16,8 +16,7 @@ class HomeNode(Node):
         return self.maxID
 
     def new_rand(self):  # random floor creating
-        rnum = randint(1, 10)
-        for i in range(rnum):
+        for i in range(randint(1, 10)):
             self.add_floor(True)
 
     def add_floor(self, rand=False):
@@ -27,8 +26,7 @@ class HomeNode(Node):
         tfn.parent = self
         # додає поверх із випадковою кількістю квартир та кімнат в них
         if rand:
-            rnum = randint(1, FloorNode.apartmens_max)
-            for i in range(rnum):
+            for i in range(randint(1, FloorNode.apartmens_max)):
                 tfn.add_apartmet()
         # додає поверх із одною квартирою з випадковою кількістю кімнат
         else:
