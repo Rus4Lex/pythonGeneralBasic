@@ -35,18 +35,22 @@ class FloorNode(Node):
     #видалити квартири (якщо у квартирах є жителі вони не видаляються)
     def sub_apartment(self, ids: list):
         out = True
+        ndel = []  # квартири що не видалились
+        tdel = []  # квартири що видалились
         for apartment in ids:
-            tfn = self.__dict__[hex(apartment)[1:]]
+            tfn = self.__dict__[hex(apartment.id)[1:]]
             if tfn.inhabs_count == 0:
-                del self.__dict__[hex(apartment)[1:]]
+                tdel.append(hex(apartment.id)[1:])
+                del self.__dict__[hex(apartment.id)[1:]]
                 self.apartmens_count -= 1
                 self.root.apartmens_count -= 1
             else:
+                ndel.append(hex(apartment.id)[1:])
                 out = False# якась із квартир не видалилась
             if self.apartmens_count == 0:  # якщо видалити всі квартири з поверху він автоматично видаляється
                 iid = hex(self.parent.id)[1:]
                 del self.root.__dict__[iid]
-        return out
+        return out, ndel, tdel
 
 
     # повернення списку квартир за заданими параметрами

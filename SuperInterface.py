@@ -33,4 +33,8 @@ class SuperInterface:
     def qlist(self) -> str:
         """Show list of apartments with rooms count"""
 
+    @abstractmethod
+    def qrem(self) -> str:
+        """"Remove list of apartments"""
+
 

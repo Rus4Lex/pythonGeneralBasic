@@ -24,6 +24,8 @@ class IManager(SuperInterface):
         self.ui_floor.onExit = self.ui_home.info
         self.ui_floor.add("qadd")
         self.ui_floor.add_help("додати квартиру на поверсі.")
+        self.ui_floor.add("qrem")
+        self.ui_floor.add_help("видалити квартири на поверсі.")
         self.ui_floor.add("qlist")
         self.ui_floor.add_help("додати квартиру на поверсі.")
 
@@ -155,3 +157,28 @@ class IManager(SuperInterface):
             cnt += 1
 
         return out
+
+    def qrem(self):
+        aps = self.__current_floor.get_apartments()
+        saps = []
+        while True:
+            inp = input("Введіть нуль для виходу або\nномера квартир які ви хочете видалити\n>>> ")
+            if inp.isdigit():
+                inp = int(inp)
+                if inp == 0:
+                    break
+                elif inp > len(aps):
+                    print("Помилка\nнемає такої квартири!")
+                elif aps[inp - 1] in saps:
+                    print("Помилка\nквартиру уже додано!")
+                else:
+                    saps.append(aps[inp - 1])
+        res = "Нічого не вибрано."
+        if len(saps) > 0:
+            res, frs, drs = self.__current_floor.sub_apartment(saps)
+            if res:
+                res = "Усі задані квартири видалено.\nid = " + "\nid = ".join(drs)
+            else:
+                res = "Не всі квартири видалено!\nid = " + "\nid = ".join(frs)
+
+        return res
