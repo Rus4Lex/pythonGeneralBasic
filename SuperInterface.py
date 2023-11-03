@@ -41,4 +41,8 @@ class SuperInterface:
     def qenter(self) -> str:
         """Enter to apartment menu section"""
 
+    @abstractmethod
+    def ainfo(self):
+        """show apartment statistics"""
+
 

@@ -34,6 +34,8 @@ class IManager(SuperInterface):
         self.ui_apart = Interface(self)  # apartment interface
         self.ui_apart.help += "---APARTMENT MENU---\n"
         self.ui_apart.onExit = self.ui_floor.info
+        self.ui_apart.add("ainfo")
+        self.ui_apart.add_help("показати статистику квартири.")
 
         self.ui_inhab = Interface(self)  # inhabitant interface
         self.ui_inhab.help += "---INHABITANT MENU---\n"
@@ -211,5 +213,12 @@ class IManager(SuperInterface):
             self.__current_apartment = None
 
         return res
+
+    def ainfo(self):
+        out = f"""\rid - {hex(self.__current_apartment.id)}
+кімнат - {self.__current_apartment.rooms_count}
+мешканців - {self.__current_apartment.inhabs_count}"""
+
+        return out
 
 
