@@ -46,7 +46,15 @@ class SuperInterface:
         """show apartment statistics"""
 
     @abstractmethod
+    def alist(self):
+        """list of inhabitant"""
+
+    @abstractmethod
     def sdown(self):
         """settle down inhabitant"""
+
+    @abstractmethod
+    def sevict(self):
+        """evict inhabitants to outrooms"""
 
 

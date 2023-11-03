@@ -5,6 +5,13 @@ import re
 
 class IManager(SuperInterface):
     def __init__(self):
+
+        self.__current_floor: FloorNode = None
+        self.__current_apartment: ApartmentNode = None
+        self.__current_inhabitant: InhabitantNode = None
+
+
+
         self.ui_home = Interface(self)  # home interface
         self.ui_home.help += "---HOME MENU---\n"
         self.ui_home.add("fradd")
@@ -37,8 +44,12 @@ class IManager(SuperInterface):
         self.ui_apart.onExit = self.ui_floor.info
         self.ui_apart.add("ainfo")
         self.ui_apart.add_help("показати статистику квартири.")
+        self.ui_apart.add("alist")
+        self.ui_apart.add_help("показати список мешканців квартири.")
         self.ui_apart.add("sdown")
         self.ui_apart.add_help("поселити мешканця.")
+        self.ui_apart.add("sevict")
+        self.ui_apart.add_help("виселити мешканців.")
 
         self.ui_inhab = Interface(self)  # inhabitant interface
         self.ui_inhab.help += "---INHABITANT MENU---\n"
@@ -52,9 +63,7 @@ class IManager(SuperInterface):
         # self.main_database = None
 
 
-        self.__current_floor = None
-        self.__current_apartment = None
-        self.__current_inhabitant = None
+
 
     def fradd(self):
         self.main_home.new_rand()
@@ -233,10 +242,10 @@ class IManager(SuperInterface):
                 break
             elif len(tin) == 1:
                 ag = int(inp.split(' ')[-1])
-                if 16 > ag > 100:
+                if 16 > ag or ag > 100:
                     print("Вік неправильний.\n 16-99")
                     continue
-                tin = InhabitantNode(inp.split(' ')[:2], ag, self.main_home.root)
+                tin = InhabitantNode(" ".join(inp.split(' ')[:-1]), ag, self.main_home.root)
                 rslt = self.__current_apartment.add_inhabitant(tin)
                 if rslt:
                     out = f"Мещканця id - {hex(tin.id)} створено."
@@ -248,5 +257,42 @@ class IManager(SuperInterface):
                 print("Помилка вводу даних.")
 
         return out
+
+
+    def alist(self):
+        cnt = 1
+        out = ""
+        nhbs = self.__current_apartment.get_habitants()
+        if len(nhbs) == 0:
+            return "У квартирі ніхто не прожииває."
+        for h in nhbs:
+            out += f"мешканець {cnt}: {h.get()[0]}\n"
+            cnt += 1
+
+        return out
+
+    def sevict(self):
+        nhbs = self.__current_apartment.get_habitants()
+        if len(nhbs) == 0:
+            return "У квартирі немає кого виселяти!"
+        saps = []
+        while True:
+            inp = input("Введіть нуль для виходу або\nномера жителів яких ви хочете виселити\n>>> ")
+            if inp.isdigit():
+                inp = int(inp)
+                if inp == 0:
+                    break
+                elif inp > len(nhbs):
+                    print("Помилка\nнемає такого жителя!")
+                elif nhbs[inp - 1] in saps:
+                    print("Помилка\nжитель уже кандидат на виселення!")
+                else:
+                    saps.append(nhbs[inp - 1])
+        res = "Нічого не вибрано."
+        if len(saps) > 0:
+            self.__current_apartment.sub_inhabitants(saps)
+            res = "Вказаних жителів виселено."
+
+        return res
 
 
