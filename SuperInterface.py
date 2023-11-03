@@ -35,6 +35,10 @@ class SuperInterface:
 
     @abstractmethod
     def qrem(self) -> str:
-        """"Remove list of apartments"""
+        """Remove list of apartments"""
+
+    @abstractmethod
+    def qenter(self) -> str:
+        """Enter to apartment menu section"""
 
 

@@ -28,9 +28,13 @@ class IManager(SuperInterface):
         self.ui_floor.add_help("видалити квартири на поверсі.")
         self.ui_floor.add("qlist")
         self.ui_floor.add_help("додати квартиру на поверсі.")
+        self.ui_floor.add("qenter")
+        self.ui_floor.add_help("увійти у квартиру на поверсі.")
 
         self.ui_apart = Interface(self)  # apartment interface
         self.ui_apart.help += "---APARTMENT MENU---\n"
+        self.ui_apart.onExit = self.ui_floor.info
+
         self.ui_inhab = Interface(self)  # inhabitant interface
         self.ui_inhab.help += "---INHABITANT MENU---\n"
         self.ui_infos = Interface(self)  # statistics interface
@@ -121,6 +125,8 @@ class IManager(SuperInterface):
                 else:
                     self.__current_floor = floors[inp - 1]
                     break
+            else:
+                print("Помилка вводу!")
 
         if self.__current_floor is not None:
             res = self.ui_floor.walk()
@@ -182,3 +188,28 @@ class IManager(SuperInterface):
                 res = "Не всі квартири видалено!\nid = " + "\nid = ".join(frs)
 
         return res
+
+    def qenter(self) -> str:
+        res = "Нічого не вибрано."
+        aps = self.__current_floor.get_apartments()
+        while True:
+            inp = input("Введіть нуль для виходу або\nномер квартири на яку ви хочете зайти\n>>> ")
+            if inp.isdigit():
+                inp = int(inp)
+                if inp == 0:
+                    return res
+                elif inp > len(aps):
+                    print("Помилка\nнемає такої квартири!")
+                else:
+                    self.__current_apartment = aps[inp - 1]
+                    break
+            else:
+                print("Помилка вводу!")
+
+        if self.__current_apartment is not None:
+            res = self.ui_apart.walk()
+            self.__current_apartment = None
+
+        return res
+
+
