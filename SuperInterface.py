@@ -69,4 +69,8 @@ class SuperInterface:
     def finfo(self):
         """Enter to info menu"""
 
+    @abstractmethod
+    def istat(self):
+        """Get home infos"""
+
 
