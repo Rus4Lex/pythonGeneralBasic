@@ -1,6 +1,7 @@
 from Nodes import *
 from Interface import Interface
 from SuperInterface import SuperInterface
+import re
 
 class IManager(SuperInterface):
     def __init__(self):
@@ -224,8 +225,28 @@ class IManager(SuperInterface):
         return out
 
     def sdown(self):
+        out = "Скасовано."
+        while True:
+            inp = input("Введіть нуль для виходу або\nП І Б вік мешканця через пробіл\n>>> ")
+            tin = re.findall("^\w+\s\w+\s\w+\s\d{2}$", inp)
+            if inp == '0':
+                break
+            elif len(tin) == 1:
+                ag = int(inp.split(' ')[-1])
+                if 16 > ag > 100:
+                    print("Вік неправильний.\n 16-99")
+                    continue
+                tin = InhabitantNode(inp.split(' ')[:2], ag, self.main_home.root)
+                rslt = self.__current_apartment.add_inhabitant(tin)
+                if rslt:
+                    out = f"Мещканця id - {hex(tin.id)} створено."
+                else:
+                    out = f"У квартирі більше немає місця!"
+                    self.main_home.maxID -= 1
+                break
+            else:
+                print("Помилка вводу даних.")
 
-
-        return ""
+        return out
 
 

@@ -7,7 +7,7 @@ class HomeNode(Node):
         super().__init__(self)
         self.floor_count = 0
         self.outrooms = []#виселені жителі
-        self.maxID = 0
+        self.maxID = 1000
         self.id = self.get_maxID()
         self.apartmens_count = 0
 
