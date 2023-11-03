@@ -50,6 +50,8 @@ class IManager(SuperInterface):
         self.ui_apart.add_help("поселити мешканця.")
         self.ui_apart.add("sevict")
         self.ui_apart.add_help("виселити мешканців.")
+        self.ui_apart.add("roomset")
+        self.ui_apart.add_help("встановити кількість кімнат у квартирі.")
 
         self.ui_inhab = Interface(self)  # inhabitant interface
         self.ui_inhab.help += "---INHABITANT MENU---\n"
@@ -294,5 +296,21 @@ class IManager(SuperInterface):
             res = "Вказаних жителів виселено."
 
         return res
+
+    def roomset(self):
+        while True:
+            inp = input("Введіть нуль для виходу або\nкількість кімнат яку ви хочете встановити\n>>> ")
+            if inp.isdigit():
+                inp = int(inp)
+                if inp == 0:
+                    return "Скасовано."
+                else:
+                    res = self.__current_apartment.set_rooms(inp)
+                    if res:
+                        return f"Встановлено кімнат {self.__current_apartment.rooms_count}"
+                    else:
+                        return f"Кімнат не може бути меньше ніж жителів"
+            else:
+                print("Помилка вводу!")
 
 

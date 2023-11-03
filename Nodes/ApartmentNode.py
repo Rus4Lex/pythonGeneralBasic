@@ -10,9 +10,10 @@ class ApartmentNode(Node):
 
     # додати кімнати
     def set_rooms(self, cnt):
-        if cnt <= self.inhabs_count:
+        self.rooms_count = (cnt % ApartmentNode.room_max) + 1
+        if cnt < self.inhabs_count or self.rooms_count < self.inhabs_count:
+            self.rooms_count = self.inhabs_count
             return False # maximum 1 inhab 1 room
-        self.rooms_count = (cnt % ApartmentNode.room_max)+1
         return True
 
     # поселити мешканця

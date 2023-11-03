@@ -57,4 +57,12 @@ class SuperInterface:
     def sevict(self):
         """evict inhabitants to outrooms"""
 
+    @abstractmethod
+    def roomset(self):
+        """set rooms count"""
+
+    @abstractmethod
+    def sedit(self):
+        """edit inhabitant data"""
+
 
