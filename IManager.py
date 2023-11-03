@@ -36,6 +36,8 @@ class IManager(SuperInterface):
         self.ui_apart.onExit = self.ui_floor.info
         self.ui_apart.add("ainfo")
         self.ui_apart.add_help("показати статистику квартири.")
+        self.ui_apart.add("sdown")
+        self.ui_apart.add_help("поселити мешканця.")
 
         self.ui_inhab = Interface(self)  # inhabitant interface
         self.ui_inhab.help += "---INHABITANT MENU---\n"
@@ -220,5 +222,10 @@ class IManager(SuperInterface):
 мешканців - {self.__current_apartment.inhabs_count}"""
 
         return out
+
+    def sdown(self):
+
+
+        return ""
 
 

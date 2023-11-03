@@ -45,4 +45,8 @@ class SuperInterface:
     def ainfo(self):
         """show apartment statistics"""
 
+    @abstractmethod
+    def sdown(self):
+        """settle down inhabitant"""
+
 
