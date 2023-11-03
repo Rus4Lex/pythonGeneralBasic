@@ -31,7 +31,7 @@ class ApartmentNode(Node):
 
 
     # виселити мешканців
-    def sub_inhabitants(self, ids=None):
+    def sub_inhabitants(self, ids=None, over=False):
         if self.inhabs_count == 0:
             return False #room is empty
         if ids is None:# if ids is None delete all inhabitants
@@ -39,7 +39,8 @@ class ApartmentNode(Node):
         for k in ids:
             tit = self.__dict__[hex(k.id)[1:]]
             tit.parent = self.root
-            self.root.outrooms.append(tit)
+            if not over:
+                self.root.outrooms.append(tit)
             del self.__dict__[hex(k.id)[1:]]
             self.inhabs_count -= 1
             self.parent.inhabs_count -= 1

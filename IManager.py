@@ -48,6 +48,8 @@ class IManager(SuperInterface):
         self.ui_apart.add_help("показати список мешканців квартири.")
         self.ui_apart.add("sdown")
         self.ui_apart.add_help("поселити мешканця.")
+        self.ui_apart.add("sedit")
+        self.ui_apart.add_help("редагувати мешканця.")
         self.ui_apart.add("sevict")
         self.ui_apart.add_help("виселити мешканців.")
         self.ui_apart.add("roomset")
@@ -250,7 +252,7 @@ class IManager(SuperInterface):
                 tin = InhabitantNode(" ".join(inp.split(' ')[:-1]), ag, self.main_home.root)
                 rslt = self.__current_apartment.add_inhabitant(tin)
                 if rslt:
-                    out = f"Мещканця id - {hex(tin.id)} створено."
+                    out = f"Мещканець id - {hex(tin.id)}."
                 else:
                     out = f"У квартирі більше немає місця!"
                     self.main_home.maxID -= 1
@@ -268,7 +270,7 @@ class IManager(SuperInterface):
         if len(nhbs) == 0:
             return "У квартирі ніхто не прожииває."
         for h in nhbs:
-            out += f"мешканець {cnt}: {h.get()[0]}\n"
+            out += f"мешканець {cnt}: {h.get()[0]}, років {h.get()[1]}\n"
             cnt += 1
 
         return out
@@ -305,12 +307,32 @@ class IManager(SuperInterface):
                 if inp == 0:
                     return "Скасовано."
                 else:
-                    res = self.__current_apartment.set_rooms(inp)
+                    res = self.__current_apartment.set_rooms(inp-1)
                     if res:
                         return f"Встановлено кімнат {self.__current_apartment.rooms_count}"
                     else:
                         return f"Кімнат не може бути меньше ніж жителів"
             else:
                 print("Помилка вводу!")
+
+    def sedit(self):
+        nhbs = self.__current_apartment.get_habitants()
+        if len(nhbs) == 0:
+            return "У квартирі немає кого редагувати!"
+        saps = []
+        while True:
+            inp = input("Введіть нуль для виходу або\nномер жителя якого ви хочете редагувати\n>>> ")
+            if inp.isdigit():
+                inp = int(inp)
+                if inp == 0:
+                    return "Нічого не вибрано."
+                elif inp > len(nhbs):
+                    print("Помилка\nнемає такого жителя!")
+                else:
+                    saps.append(nhbs[inp - 1])
+                    break
+        self.__current_apartment.sub_inhabitants(saps, True)
+
+        return self.sdown()
 
 
