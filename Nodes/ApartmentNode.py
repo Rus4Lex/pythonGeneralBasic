@@ -37,9 +37,9 @@ class ApartmentNode(Node):
         if ids is None:# if ids is None delete all inhabitants
             ids = [self.__dict__[x].id for x in self.__dict__ if x[0] == 'x']
         for k in ids:
-            tit = self.__dict__[hex(k.id)[1:]]
-            tit.parent = self.root
             if not over:
+                tit = self.__dict__[hex(k.id)[1:]]
+                tit.parent = self.root
                 self.root.outrooms.append(tit)
             del self.__dict__[hex(k.id)[1:]]
             self.inhabs_count -= 1
