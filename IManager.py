@@ -9,11 +9,13 @@ class IManager(SuperInterface):
         self.__current_floor: FloorNode = None
         self.__current_apartment: ApartmentNode = None
         self.__current_inhabitant: InhabitantNode = None
-
+        # self.main_database = None
 
 
         self.ui_home = Interface(self)  # home interface
         self.ui_home.help += "---HOME MENU---\n"
+        self.ui_home.add("finfo")
+        self.ui_home.add_help("перейти у розділ статистики.")
         self.ui_home.add("fradd")
         self.ui_home.add_help("створити пустий дім з випадковими квартирами.")
         self.ui_home.add("frem")
@@ -55,16 +57,16 @@ class IManager(SuperInterface):
         self.ui_apart.add("roomset")
         self.ui_apart.add_help("встановити кількість кімнат у квартирі.")
 
-        self.ui_inhab = Interface(self)  # inhabitant interface
-        self.ui_inhab.help += "---INHABITANT MENU---\n"
+
         self.ui_infos = Interface(self)  # statistics interface
+        self.ui_infos.help += "---HOUSE INFO MENU---\n"
+        self.ui_infos.onExit = self.ui_home.info
 
         self.ui_datbe = Interface(self)  # database interface
 
         self.main_home = HomeNode()
-
         self.ui_home.walk()
-        # self.main_database = None
+
 
 
 
@@ -334,5 +336,9 @@ class IManager(SuperInterface):
         self.__current_apartment.sub_inhabitants(saps, True)
 
         return self.sdown()
+
+
+    def finfo(self):
+        return self.ui_infos.walk()
 
 

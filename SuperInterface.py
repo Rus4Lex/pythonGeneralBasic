@@ -65,4 +65,8 @@ class SuperInterface:
     def sedit(self):
         """edit inhabitant data"""
 
+    @abstractmethod
+    def finfo(self):
+        """Enter to info menu"""
+
 
