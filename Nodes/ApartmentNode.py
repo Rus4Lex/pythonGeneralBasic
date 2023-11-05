@@ -1,4 +1,5 @@
 from .InhabitantNode import *
+from typing import List
 #квартира
 class ApartmentNode(Node):
 
@@ -48,11 +49,26 @@ class ApartmentNode(Node):
         return True
 
     # список жителів цієї квартири
-    def get_habitants(self):
+    def get_habitants(self) -> List[InhabitantNode]:
         out = []
         for k in self.__dict__:
             if k[0] == 'x':
                 out.append(self.__dict__[k])
         return out
+
+    def sizeof(self) -> int:
+        # elem count(4 bytes)
+        # [0x4(1 bytes), address(4 bytes)]
+        # [0x5(1 bytes), address(4 bytes)]
+        # [0x1(1 bytes), address(4 bytes)]
+        # [roomsCount(4 bytes)]
+        # [inhabsCount(4 bytes)]
+        # [elem count(4 bytes)[id(4 bytes), address(4 bytes)]...]
+        inhbs = self.get_habitants()
+        sze = 22+(len(inhbs)*8)
+        for i in inhbs:
+            sze += i.sizeof()
+
+        return sze  # bytes
 
 

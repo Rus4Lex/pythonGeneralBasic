@@ -1,5 +1,6 @@
 from .ApartmentNode import *
 from random import randint
+from typing import List
 #поверх
 class FloorNode(Node):
 
@@ -54,12 +55,14 @@ class FloorNode(Node):
 
 
     # повернення списку квартир за заданими параметрами
-    def get_apartments(self, inhabs=None, rooms=None):
+    def get_apartments(self, inhabs=None, rooms=None) -> List[ApartmentNode]:
         out = []
         for k in self.__dict__:
             if k[0] == 'x':
                 tas = self.__dict__[k]
-                if inhabs is None and rooms is None:# all
+                if isinstance(inhabs, bool) and tas.inhabs_count > 0:
+                    out.append(tas)
+                elif inhabs is None and rooms is None:# all
                     out.append(tas)
                 elif inhabs is None and rooms is not None:# room count
                     if tas.rooms_count == rooms:
@@ -72,3 +75,16 @@ class FloorNode(Node):
                         out.append(tas)
 
         return out
+
+    def sizeof(self) -> int:
+        # elem count(4 bytes)
+        # [0x4(1 bytes), address(4 bytes)]
+        # [0x1(1 bytes), address(4 bytes)]
+        # [inhabsCount(4 bytes)]
+        # [elem count(4 bytes)[id(4 bytes), address(4 bytes)]...]
+        aps = self.get_apartments()
+        sze = 22+(len(aps)*8)
+        for a in aps:
+            sze += a.sizeof()
+
+        return sze  # bytes

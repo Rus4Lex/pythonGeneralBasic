@@ -15,3 +15,11 @@ class InhabitantNode(Node):
 
     def get(self):
         return self.__PIB, self.__Age
+
+    def sizeof(self) -> int:
+        # elem count(4 bytes),
+        # [0x2(1 bytes), address(4 bytes)],
+        # [0x3(1 bytes), address(4 bytes)],
+        # [size(4 bytes), word(size bytes)],
+        # [age(4 bytes)]
+        return 21+len(self.__PIB)  # bytes

@@ -1,12 +1,14 @@
 from .FloorNode import *
+from typing import List
 
 
 class HomeNode(Node):
     floor_max = 100
+
     def __init__(self):
         super().__init__(self)
         self.floor_count = 0
-        self.outrooms = []#виселені жителі
+        self.outrooms = []  # виселені жителі
         self.maxID = 1000
         self.id = self.get_maxID()
         self.apartmens_count = 0
@@ -49,20 +51,9 @@ class HomeNode(Node):
                 out = False  # якийсь із поверхів не видалився
         return out, ndel, tdel
 
-
-    def get_floors(self):
+    def get_floors(self) -> List[FloorNode]:
         out = []
         for k in self.__dict__:
             if k[0] == 'x':
                 out.append(self.__dict__[k])
         return out
-
-
-
-
-
-
-
-
-
-
