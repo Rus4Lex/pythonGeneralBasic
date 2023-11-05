@@ -77,13 +77,15 @@ class FloorNode(Node):
         return out
 
     def sizeof(self) -> int:
-        # elem count(4 bytes)
-        # [0x4(1 bytes), address(4 bytes)]
+        # elem count(1 bytes) = 3
+        # [0x13(1 bytes), address(4 bytes)]
+        # [0x15(1 bytes), address(4 bytes)]
         # [0x1(1 bytes), address(4 bytes)]
         # [inhabsCount(4 bytes)]
+        # [apartmensCount(4 bytes)]
         # [elem count(4 bytes)[id(4 bytes), address(4 bytes)]...]
         aps = self.get_apartments()
-        sze = 22+(len(aps)*8)
+        sze = 28+(len(aps)*8)
         for a in aps:
             sze += a.sizeof()
 

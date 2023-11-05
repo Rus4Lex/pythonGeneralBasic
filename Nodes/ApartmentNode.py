@@ -57,15 +57,15 @@ class ApartmentNode(Node):
         return out
 
     def sizeof(self) -> int:
-        # elem count(4 bytes)
-        # [0x4(1 bytes), address(4 bytes)]
-        # [0x5(1 bytes), address(4 bytes)]
+        # elem count(1 bytes) = 3
+        # [0x12(1 bytes), address(4 bytes)]
+        # [0x13(1 bytes), address(4 bytes)]
         # [0x1(1 bytes), address(4 bytes)]
         # [roomsCount(4 bytes)]
         # [inhabsCount(4 bytes)]
         # [elem count(4 bytes)[id(4 bytes), address(4 bytes)]...]
         inhbs = self.get_habitants()
-        sze = 22+(len(inhbs)*8)
+        sze = 28+(len(inhbs)*8)
         for i in inhbs:
             sze += i.sizeof()
 

@@ -8,8 +8,8 @@ class HomeNode(Node):
     def __init__(self):
         super().__init__(self)
         self.floor_count = 0
-        self.outrooms = []  # виселені жителі
-        self.maxID = 1000
+        self.outrooms: List[InhabitantNode] = []  # виселені жителі
+        self.maxID = int('0x100', 16)
         self.id = self.get_maxID()
         self.apartmens_count = 0
 
@@ -46,6 +46,7 @@ class HomeNode(Node):
             if self.__dict__[hex(k.id)[1:]].inhabs_count == 0:
                 tdel.append(hex(k.id)[1:])
                 del self.__dict__[hex(k.id)[1:]]
+                self.floor_count -= 1
             else:
                 ndel.append(hex(k.id)[1:])
                 out = False  # якийсь із поверхів не видалився
@@ -57,3 +58,26 @@ class HomeNode(Node):
             if k[0] == 'x':
                 out.append(self.__dict__[k])
         return out
+
+
+    def sizeof(self) -> int:
+        # signature "MDP" (3 bytes)
+        # elem count(1 bytes) = 1 always
+        # id(4 bytes), address(4 bytes)]
+        # elem count(1 bytes) = 5
+        # [0x14(1 bytes), address(4 bytes)]
+        # [0x15(1 bytes), address(4 bytes)]
+        # [0x13(1 bytes), address(4 bytes)]
+        # [0x2(1 bytes), address(4 bytes)]
+        # [0x1(1 bytes), address(4 bytes)]
+        # [floor_count(4 bytes)]
+        # [apartmens_count(4 bytes)]
+        # [inhabsCount(4 bytes)]
+        # [elem count(4 bytes)[id(4 bytes), address(4 bytes)]...] ; outhome inahabitants
+        # [elem count(4 bytes)[id(4 bytes), address(4 bytes)]...] ; floors
+        frs = self.get_floors()
+        sze = 22+(len(frs)*8)
+        for a in frs:
+            sze += a.sizeof()
+
+        return sze  # bytes
