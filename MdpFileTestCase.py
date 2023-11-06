@@ -45,7 +45,7 @@ class MdpFileTestCase(unittest.TestCase):
         try:
             MdpFile.read("bigFile.mdp")
         except Exception as e:
-            self.fail(f"Raised reader!\n{e}")
+            self.fail(f"Raised reader big_data_file!\n{e}")
 
     def test_unknown_file_reading(self):
         with self.assertRaises(Exception):
