@@ -60,24 +60,4 @@ class HomeNode(Node):
         return out
 
 
-    def sizeof(self) -> int:
-        # signature "MDP" (3 bytes)
-        # elem count(1 bytes) = 1 always
-        # id(4 bytes), address(4 bytes)]
-        # elem count(1 bytes) = 5
-        # [0x14(1 bytes), address(4 bytes)]
-        # [0x15(1 bytes), address(4 bytes)]
-        # [0x13(1 bytes), address(4 bytes)]
-        # [0x2(1 bytes), address(4 bytes)]
-        # [0x1(1 bytes), address(4 bytes)]
-        # [floor_count(4 bytes)]
-        # [apartmens_count(4 bytes)]
-        # [inhabsCount(4 bytes)]
-        # [elem count(4 bytes)[id(4 bytes), address(4 bytes)]...] ; outhome inahabitants
-        # [elem count(4 bytes)[id(4 bytes), address(4 bytes)]...] ; floors
-        frs = self.get_floors()
-        sze = 22+(len(frs)*8)
-        for a in frs:
-            sze += a.sizeof()
 
-        return sze  # bytes

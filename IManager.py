@@ -16,6 +16,8 @@ class IManager(SuperInterface):
 
         self.ui_home = Interface(self)  # home interface
         self.ui_home.help += "---HOME MENU---\n"
+        self.ui_home.add("about")
+        self.ui_home.add_help("загальна інформація про будинок.")
         self.ui_home.add("mdp")
         self.ui_home.add_help("перейти у файлове меню.")
         self.ui_home.add("finfo")
@@ -74,8 +76,6 @@ class IManager(SuperInterface):
         self.ui_infos.add_help("вивести інформацію про усіх жителів.")
         self.ui_infos.add("ialist")
         self.ui_infos.add_help("вивести інформацію про усі квартири.")
-        self.ui_infos.add("infa")
-        self.ui_infos.add_help("вивести інформацію про окрему квартиру.")
         self.ui_infos.add("inft")
         self.ui_infos.add_help("вивести типізовану інформацію про квартири.")
         self.ui_infos.add("outlist")
@@ -97,13 +97,22 @@ class IManager(SuperInterface):
         self.ui_datbe.add_help("видалити файл зі списку.")
 
         self.main_home = HomeNode()
-        self.main_home = MdpFile.read("testingHome.mdp")
+        #self.main_home = MdpFile.read("testingHome.mdp")
 
         self.ui_home.walk()
 
 
 
-
+    def about(self):
+        out = f"""\rІнформація:
+максимальний ідетнифікатор - {hex(self.main_home.maxID)[2:]}
+ідентифікатор - {hex(self.main_home.id)[2:]}
+поверхів - {self.main_home.floor_count}
+квартир - {self.main_home.apartmens_count}
+жителів - {self.main_home.inhabs_count}
+виселених жителів - {len(self.main_home.outrooms)}
+        """
+        return out
 
     def fradd(self):
         self.main_home.new_rand()
@@ -267,7 +276,7 @@ class IManager(SuperInterface):
         return res
 
     def ainfo(self):
-        out = f"""\rid - {hex(self.__current_apartment.id)}
+        out = f"""\rквартира {hex(self.__current_apartment.id)}
 кімнат - {self.__current_apartment.rooms_count}
 мешканців - {self.__current_apartment.inhabs_count}"""
 
@@ -322,10 +331,10 @@ class IManager(SuperInterface):
                     for rf in range(len(nhbs)):
                         if nhbs[rf].id == inp:
                             del nhbs[rf]
+                            break
 
                     return f"{hex(pl[0].id)[2:]} заселено."
-        res = "Нічого не вибрано."
-        return res
+        return "Нічого не вибрано."
 
 
     def alist(self):
@@ -426,7 +435,7 @@ class IManager(SuperInterface):
         out = "Списки квартир:\n"
         floors = self.main_home.get_floors()
         for fs in floors:
-            for aps in fs.get_apartments(True):
+            for aps in fs.get_apartments():
                 out += f"поверх - {hex(fs.id)[2:]}\n"
                 out += f"квартира - {hex(aps.id)[2:]}\nжителів - {aps.inhabs_count}, кімнат - {aps.rooms_count}\n\n"
         if out == "Списки квартир:\n":
@@ -434,7 +443,45 @@ class IManager(SuperInterface):
         return out
 
     def inft(self):
-        """Info from apartments any type (characteristics)"""
+        floors = self.main_home.get_floors()
+        out = ""
+        while True:
+            inp = input("Введіть тип пошуку\n (i - кімнат, a - жителів , ia - усе разом)\n>>> ")
+            if inp == "i":
+                inp_a = input("Введіть кількість кімнат >>> ")
+                if inp_a.isdigit():
+                    inp_a = int(inp_a)
+                    for fs in floors:
+                        for aps in fs.get_apartments(rooms=inp_a):
+                            out += f"поверх - {hex(fs.id)[2:]}\n"
+                            out += f"квартира - {hex(aps.id)[2:]}\nжителів - {aps.inhabs_count}\n\n"
+                else:
+                    return "помилка вводу"
+            elif inp == "a":
+                inp_i = input("Введіть кількість жителів >>> ")
+                if inp_i.isdigit():
+                    inp_i = int(inp_i)
+                    for fs in floors:
+                        for aps in fs.get_apartments(inhabs=inp_i):
+                            out += f"поверх - {hex(fs.id)[2:]}\n"
+                            out += f"квартира - {hex(aps.id)[2:]}\nкімнат - {aps.rooms_count}\n\n"
+                else:
+                    return "помилка вводу"
+            elif inp == "ia":
+                inp_i = input("Введіть кількість жителів >>> ")
+                inp_a = input("Введіть кількість кімнат >>> ")
+                if inp_i.isdigit() and inp_a.isdigit():
+                    inp_i = int(inp_i)
+                    inp_a = int(inp_a)
+                    for fs in floors:
+                        for aps in fs.get_apartments(inp_i, inp_a):
+                            out += f"поверх - {hex(fs.id)[2:]}\n"
+                            out += f"квартира - {hex(aps.id)[2:]}\n\n"
+                else:
+                    return "помилка вводу"
+            else:
+                return "помилка вводу"
+            return out if len(out)>0 else "Нічого не знайдено."
 
     def mdp(self):
         return self.ui_datbe.walk()

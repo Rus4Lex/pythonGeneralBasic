@@ -11,7 +11,8 @@ class MdpReader(Reader):
         "0x12": "rooms_count",
         "0x13": "inhabs_count",
         "0x14": "floor_count",
-        "0x15": "apartmens_count"
+        "0x15": "apartmens_count",
+        "0x16": "maxID"
     }
 
     def __init__(self, home: HomeNode, name):

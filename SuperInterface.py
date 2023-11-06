@@ -10,6 +10,9 @@ class SuperInterface:
             return False
 
     @abstractmethod
+    def about(self) -> str:
+        """Get info from House"""
+    @abstractmethod
     def fradd(self) -> str:
         """Add a random floors, apartments and rooms"""
 
@@ -53,75 +56,75 @@ class SuperInterface:
         """Enter to apartment menu section"""
 
     @abstractmethod
-    def ainfo(self):
+    def ainfo(self) -> str:
         """show apartment statistics"""
 
     @abstractmethod
-    def alist(self):
+    def alist(self) -> str:
         """list of inhabitant"""
 
     @abstractmethod
-    def sdown(self):
+    def sdown(self) -> str:
         """settle down inhabitant"""
 
     @abstractmethod
-    def outlist(self):
+    def outlist(self) -> str:
         """show inhabitant from outrooms"""
     @abstractmethod
-    def sreg(self):
+    def sreg(self) -> str:
         """settle down inhabitant from outrooms"""
 
     @abstractmethod
-    def sevict(self):
+    def sevict(self) -> str:
         """evict inhabitants to outrooms"""
 
     @abstractmethod
-    def roomset(self):
+    def roomset(self) -> str:
         """set rooms count"""
 
     @abstractmethod
-    def sedit(self):
+    def sedit(self) -> str:
         """edit inhabitant data"""
         
     #info MENU
 
     @abstractmethod
-    def finfo(self):
+    def finfo(self) -> str:
         """Enter to info menu"""
 
     @abstractmethod
-    def iilist(self):
+    def iilist(self) -> str:
         """Full list of inhabitants"""
 
     @abstractmethod
-    def ialist(self):
+    def ialist(self) -> str:
         """Full list of apartments"""
 
 
     @abstractmethod
-    def inft(self):
+    def inft(self) -> str:
         """Info from apartments any type (characteristics)"""
 
 
     # file saving, loading and deleting
 
     @abstractmethod
-    def mdp(self):
+    def mdp(self) -> str:
         """Enter to file menu"""
     @abstractmethod
-    def mdplist(self):
+    def mdplist(self) -> str:
         """list of mdp files here"""
     @abstractmethod
-    def mdpload(self):
+    def mdpload(self) -> str:
         """load file from list mdp files"""
     @abstractmethod
-    def mdpsave(self):
+    def mdpsave(self) -> str:
         """save database to new file"""
     @abstractmethod
-    def mdpres(self):
+    def mdpres(self) -> str:
         """rewrite file from list mdp files"""
     @abstractmethod
-    def mdpdel(self):
+    def mdpdel(self) -> str:
         """delete file from list mdp files"""
 
 

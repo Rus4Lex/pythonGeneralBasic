@@ -6,7 +6,6 @@ class MdpWriter(Writer):
     def __init__(self, home: HomeNode, name: str):
         self.name = name
         self.home: HomeNode = home
-        self.dataBlockSize = self.home.sizeof()
         self.dataBlock = io.BytesIO()
         self.headSet()
         self.innerSet()  # write all other data
@@ -27,23 +26,25 @@ class MdpWriter(Writer):
     def headSet(self):
         self.dataBlock.write(b"MDP")
         self.dataBlock.write(st.pack("<II", self.home.id, 0))
-        self.dataBlock.write(st.pack("<B", 5))  # num elements
+        self.dataBlock.write(st.pack("<B", 6))  # num elements
 
         self.dataBlock.write(st.pack("<BI", self.__x("0x14"), 0))  # floo rcount
         self.dataBlock.write(st.pack("<BI", self.__x("0x15"), 4))  # aprtments count
         self.dataBlock.write(st.pack("<BI", self.__x("0x13"), 8))  # inhabs count
-        self.dataBlock.write(st.pack("<BI", self.__x("0x2"), 12))  # outrooms position
+        self.dataBlock.write(st.pack("<BI", self.__x("0x16"), 12))  # maxID
+        self.dataBlock.write(st.pack("<BI", self.__x("0x2"), 16))  # outrooms position
 
         # calc outrooms sizes
         tsze = 4  # info about elements count
         for o in self.home.outrooms:
             tsze += 8 + o.sizeof()
 
-        self.dataBlock.write(st.pack("<BI", self.__x("0x1"), 12 + tsze))  # floors position
+        self.dataBlock.write(st.pack("<BI", self.__x("0x1"), 16 + tsze))  # floors position
         # header data writing
         self.dataBlock.write(st.pack("<I", self.home.floor_count))  # floor count
         self.dataBlock.write(st.pack("<I", self.home.apartmens_count))  # aprtments count
         self.dataBlock.write(st.pack("<I", self.home.inhabs_count))  # inhabs count
+        self.dataBlock.write(st.pack("<I", self.home.maxID))  # maxID
         self.outSet()  # write outrooms
 
     def outSet(self):
