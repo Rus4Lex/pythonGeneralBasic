@@ -41,7 +41,7 @@ class IManager(SuperInterface):
         self.ui_floor.add("qrem")
         self.ui_floor.add_help("видалити квартири на поверсі.")
         self.ui_floor.add("qlist")
-        self.ui_floor.add_help("додати квартиру на поверсі.")
+        self.ui_floor.add_help("список квартир на поверсі.")
         self.ui_floor.add("qenter")
         self.ui_floor.add_help("увійти у квартиру на поверсі.")
 
@@ -52,8 +52,12 @@ class IManager(SuperInterface):
         self.ui_apart.add_help("показати статистику квартири.")
         self.ui_apart.add("alist")
         self.ui_apart.add_help("показати список мешканців квартири.")
+        self.ui_apart.add("outlist")
+        self.ui_apart.add_help("показати список виселених мешканців.")
         self.ui_apart.add("sdown")
         self.ui_apart.add_help("поселити мешканця.")
+        self.ui_apart.add("sreg")
+        self.ui_apart.add_help("поселити мешканця із списку виселених.")
         self.ui_apart.add("sedit")
         self.ui_apart.add_help("редагувати мешканця.")
         self.ui_apart.add("sevict")
@@ -62,11 +66,20 @@ class IManager(SuperInterface):
         self.ui_apart.add_help("встановити кількість кімнат у квартирі.")
 
 
+
         self.ui_infos = Interface(self)  # statistics interface
         self.ui_infos.help += "---HOUSE INFO MENU---\n"
         self.ui_infos.onExit = self.ui_home.info
         self.ui_infos.add("iilist")
         self.ui_infos.add_help("вивести інформацію про усіх жителів.")
+        self.ui_infos.add("ialist")
+        self.ui_infos.add_help("вивести інформацію про усі квартири.")
+        self.ui_infos.add("infa")
+        self.ui_infos.add_help("вивести інформацію про окрему квартиру.")
+        self.ui_infos.add("inft")
+        self.ui_infos.add_help("вивести типізовану інформацію про квартири.")
+        self.ui_infos.add("outlist")
+        self.ui_infos.add_help("вивести список виселених мешканців.")
 
 
         self.ui_datbe = Interface(self)  # database interface
@@ -84,6 +97,8 @@ class IManager(SuperInterface):
         self.ui_datbe.add_help("видалити файл зі списку.")
 
         self.main_home = HomeNode()
+        self.main_home = MdpFile.read("testingHome.mdp")
+
         self.ui_home.walk()
 
 
@@ -101,16 +116,17 @@ class IManager(SuperInterface):
         sfloors = []
         while True:
             inp = input("Введіть нуль для виходу або\nномера поверхів які ви хочете видалити\n>>> ")
-            if inp.isdigit():
-                inp = int(inp)
+            inp = "0x" + inp
+            if self.ishex(inp):
+                inp = int(inp, 16)
                 if inp == 0:
                     break
-                elif inp > len(floors):
+                elif len([rf for rf in floors if rf.id == inp]) == 0:
                     print("Помилка\nнемає такого поверху!")
-                elif floors[inp-1] in sfloors:
+                elif len([rf for rf in sfloors if rf.id == inp]) == 1:
                     print("Помилка\nповерх уже додано!")
                 else:
-                    sfloors.append(floors[inp-1])
+                    sfloors.append(self.main_home.__dict__[hex(inp)[1:]])
         res = "Нічого не вибрано."
         if len(sfloors) > 0:
             res, frs, drs = self.main_home.del_floors(sfloors)
@@ -127,11 +143,9 @@ class IManager(SuperInterface):
         if len(floors) == 0:
             return "Дім пустий."
         out = ""
-        cnt = 1
 
         for i in floors:
-            out += f"floor {cnt}: id={hex(i.id)}\n"
-            cnt += 1
+            out += f"поверх: {hex(i.id)[2:]}\n квартир - {i.apartmens_count}\n жителів - {i.inhabs_count}\n\n"
 
         return out
 
@@ -154,15 +168,16 @@ class IManager(SuperInterface):
         res = "Нічого не вибрано."
         floors = self.main_home.get_floors()
         while True:
-            inp = input("Введіть нуль для виходу або\nномер поверху на який ви хочете зайти\n>>> ")
-            if inp.isdigit():
-                inp = int(inp)
+            inp = input("Введіть нуль для виходу або\nid поверху на який ви хочете зайти\n>>> ")
+            inp = "0x"+inp
+            if self.ishex(inp):
+                inp = int(inp, 16)
                 if inp == 0:
                     return res
-                elif inp > len(floors):
+                elif len([rf for rf in floors if rf.id == inp]) == 0:
                     print("Помилка\nнемає такого поверху!")
                 else:
-                    self.__current_floor = floors[inp - 1]
+                    self.__current_floor = self.main_home.__dict__[hex(inp)[1:]]
                     break
             else:
                 print("Помилка вводу!")
@@ -194,12 +209,10 @@ class IManager(SuperInterface):
         return f"Квартиру id = {hex(self.main_home.maxID)} додано."
 
     def qlist(self):
-        cnt = 1
         out = ""
         alist = self.__current_floor.get_apartments()
         for i in alist:
-            out += f"квартира {cnt}: id = {hex(i.id)}, кімнат {i.rooms_count}\n"
-            cnt += 1
+            out += f"квартира: {hex(i.id)[2:]}, \nкімнат {i.rooms_count}\nжителів {i.inhabs_count}\n\n"
 
         return out
 
@@ -208,16 +221,17 @@ class IManager(SuperInterface):
         saps = []
         while True:
             inp = input("Введіть нуль для виходу або\nномера квартир які ви хочете видалити\n>>> ")
-            if inp.isdigit():
-                inp = int(inp)
+            inp = "0x" + inp
+            if self.ishex(inp):
+                inp = int(inp, 16)
                 if inp == 0:
                     break
-                elif inp > len(aps):
+                elif len([rf for rf in aps if rf.id == inp]) == 0:
                     print("Помилка\nнемає такої квартири!")
-                elif aps[inp - 1] in saps:
+                elif len([rf for rf in saps if rf.id == inp]) == 1:
                     print("Помилка\nквартиру уже додано!")
                 else:
-                    saps.append(aps[inp - 1])
+                    saps.append(self.__current_floor.__dict__[hex(inp)[1:]])
         res = "Нічого не вибрано."
         if len(saps) > 0:
             res, frs, drs = self.__current_floor.sub_apartment(saps)
@@ -233,14 +247,15 @@ class IManager(SuperInterface):
         aps = self.__current_floor.get_apartments()
         while True:
             inp = input("Введіть нуль для виходу або\nномер квартири на яку ви хочете зайти\n>>> ")
-            if inp.isdigit():
-                inp = int(inp)
+            inp = "0x" + inp
+            if self.ishex(inp):
+                inp = int(inp, 16)
                 if inp == 0:
                     return res
-                elif inp > len(aps):
+                elif len([rf for rf in aps if rf.id == inp]) == 0:
                     print("Помилка\nнемає такої квартири!")
                 else:
-                    self.__current_apartment = aps[inp - 1]
+                    self.__current_apartment = self.__current_floor.__dict__[hex(inp)[1:]]
                     break
             else:
                 print("Помилка вводу!")
@@ -283,16 +298,43 @@ class IManager(SuperInterface):
 
         return out
 
+    def outlist(self):
+        return "".join([f"житель {hex(rs.id)[2:]}\n{rs.get()[0]}\nроків {rs.get()[1]}\n\n" for rs in self.main_home.outrooms])
+
+    def sreg(self):
+        nhbs = self.main_home.outrooms
+        if len(nhbs) == 0:
+            return "Виселені жителі відсутні!"
+        while True:
+            inp = input("Введіть нуль для виходу або\nномер жителя якого ви хочете поселити\n>>> ")
+            inp = "0x" + inp
+            if self.ishex(inp):
+                inp = int(inp, 16)
+                if inp == 0:
+                    break
+                elif len([rf for rf in nhbs if rf.id == inp]) == 0:
+                    print("Помилка\nнемає такого жителя!")
+                else:
+                    if self.__current_apartment.rooms_count == self.__current_apartment.inhabs_count:
+                        return "У квартирі більше немає місця!"
+                    pl = [rf for rf in nhbs if rf.id == inp]
+                    self.__current_apartment.add_inhabitant(pl[0])
+                    for rf in range(len(nhbs)):
+                        if nhbs[rf].id == inp:
+                            del nhbs[rf]
+
+                    return f"{hex(pl[0].id)[2:]} заселено."
+        res = "Нічого не вибрано."
+        return res
+
 
     def alist(self):
-        cnt = 1
         out = ""
         nhbs = self.__current_apartment.get_habitants()
         if len(nhbs) == 0:
             return "У квартирі ніхто не прожииває."
         for h in nhbs:
-            out += f"мешканець {cnt}: {h.get()[0]}, років {h.get()[1]}\n"
-            cnt += 1
+            out += f"мешканець {hex(h.id)[2:]}: {h.get()[0]}, років {h.get()[1]}\n"
 
         return out
 
@@ -303,16 +345,17 @@ class IManager(SuperInterface):
         saps = []
         while True:
             inp = input("Введіть нуль для виходу або\nномера жителів яких ви хочете виселити\n>>> ")
-            if inp.isdigit():
-                inp = int(inp)
+            inp = "0x" + inp
+            if self.ishex(inp):
+                inp = int(inp, 16)
                 if inp == 0:
                     break
-                elif inp > len(nhbs):
+                elif len([rf for rf in nhbs if rf.id == inp]) == 0:
                     print("Помилка\nнемає такого жителя!")
-                elif nhbs[inp - 1] in saps:
+                elif len([rf for rf in saps if rf.id == inp]) == 1:
                     print("Помилка\nжитель уже кандидат на виселення!")
                 else:
-                    saps.append(nhbs[inp - 1])
+                    saps.append(self.__current_apartment.__dict__[hex(inp)[1:]])
         res = "Нічого не вибрано."
         if len(saps) > 0:
             self.__current_apartment.sub_inhabitants(saps)
@@ -343,14 +386,15 @@ class IManager(SuperInterface):
         saps = []
         while True:
             inp = input("Введіть нуль для виходу або\nномер жителя якого ви хочете редагувати\n>>> ")
-            if inp.isdigit():
-                inp = int(inp)
+            inp = "0x" + inp
+            if self.ishex(inp):
+                inp = int(inp, 16)
                 if inp == 0:
                     return "Нічого не вибрано."
-                elif inp > len(nhbs):
+                elif len([rf for rf in nhbs if rf.id == inp]) == 0:
                     print("Помилка\nнемає такого жителя!")
                 else:
-                    saps.append(nhbs[inp - 1])
+                    saps.append(self.__current_apartment.__dict__[hex(inp)[1:]])
                     break
         self.__current_apartment.sub_inhabitants(saps, True)
 
@@ -370,18 +414,24 @@ class IManager(SuperInterface):
         floors = self.main_home.get_floors()
         for fs in floors:
             for aps in fs.get_apartments(True):
-                for inh in aps:
-                    out2 += f"id - {inh.id}\n{inh.get()[0]}, років {inh.get()[1]}\n"
+                for inh in aps.get_habitants():
+                    out2 += f"поверх - {hex(fs.id)[2:]}\nквартира - {hex(aps.id)[2:]}\n"
+                    out2 += f"житель - {hex(inh.id)[2:]}\n{inh.get()[0]}, років {inh.get()[1]}\n\n"
         if out2 == "Заселені жителі\n":
             out2 += "відсутні.\n"
         return out+out2
 
 
     def ialist(self):
-        """Full list of apartments"""
-
-    def infa(self):
-        """Info from apartment"""
+        out = "Списки квартир:\n"
+        floors = self.main_home.get_floors()
+        for fs in floors:
+            for aps in fs.get_apartments(True):
+                out += f"поверх - {hex(fs.id)[2:]}\n"
+                out += f"квартира - {hex(aps.id)[2:]}\nжителів - {aps.inhabs_count}, кімнат - {aps.rooms_count}\n\n"
+        if out == "Списки квартир:\n":
+            out += "квартири відсутні.\n"
+        return out
 
     def inft(self):
         """Info from apartments any type (characteristics)"""

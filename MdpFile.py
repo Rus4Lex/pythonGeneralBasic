@@ -43,7 +43,7 @@ def random_word(length):
 # Macro auto testing
 if __name__ == '__main__':
     main_home = HomeNode()
-    for i in range(100):
+    for i in range(10):
         main_home.add_floor(True)
 
     floors = main_home.get_floors()

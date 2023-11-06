@@ -1,6 +1,14 @@
 from abc import abstractmethod
 class SuperInterface:
 
+
+    def ishex(self, x):
+        try:
+            int(x, 16)
+            return True
+        except ValueError:
+            return False
+
     @abstractmethod
     def fradd(self) -> str:
         """Add a random floors, apartments and rooms"""
@@ -36,6 +44,9 @@ class SuperInterface:
     @abstractmethod
     def qrem(self) -> str:
         """Remove list of apartments"""
+        
+        
+    #apartment MENU
 
     @abstractmethod
     def qenter(self) -> str:
@@ -54,6 +65,13 @@ class SuperInterface:
         """settle down inhabitant"""
 
     @abstractmethod
+    def outlist(self):
+        """show inhabitant from outrooms"""
+    @abstractmethod
+    def sreg(self):
+        """settle down inhabitant from outrooms"""
+
+    @abstractmethod
     def sevict(self):
         """evict inhabitants to outrooms"""
 
@@ -64,6 +82,8 @@ class SuperInterface:
     @abstractmethod
     def sedit(self):
         """edit inhabitant data"""
+        
+    #info MENU
 
     @abstractmethod
     def finfo(self):
@@ -77,9 +97,6 @@ class SuperInterface:
     def ialist(self):
         """Full list of apartments"""
 
-    @abstractmethod
-    def infa(self):
-        """Info from apartment"""
 
     @abstractmethod
     def inft(self):

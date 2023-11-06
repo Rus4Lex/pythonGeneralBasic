@@ -58,7 +58,7 @@ class MdpReader(Reader):
             if _id == self.__x("0x10"):
                 ts, = self.get("<I")
                 inab.__dict__[MdpReader.mask[hex(_id)]] = self.dataBlock.read(ts).decode("utf-8")
-            elif id == self.__x("0x11"):
+            elif _id == self.__x("0x11"):
                 inab.__dict__[MdpReader.mask[hex(_id)]], = self.get("<I")
             self.dataBlock.seek(curPos)
         if parent is None:
