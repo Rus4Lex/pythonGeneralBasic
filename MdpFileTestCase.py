@@ -3,9 +3,9 @@ from MdpFile import *
 
 class MdpFileTestCase(unittest.TestCase):
 
-    def random_word(self, length):
+    def random_word(self, length, eng=False):
         # letters = string.ascii_lowercase
-        letters = string.ascii_lowercase + "".join([chr(a) for a in range(ord('а'), ord('я'))])
+        letters = string.ascii_lowercase if eng else "".join([chr(a) for a in range(ord('а'), ord('я'))])
         word = ''.join(choice(letters) for _ in range(length))
         return word.capitalize()
     def test_empty_file_a(self):
@@ -33,7 +33,7 @@ class MdpFileTestCase(unittest.TestCase):
                 for j in aps:
                     for k in range(randint(0, j.rooms_count)):
                         j.add_inhabitant(InhabitantNode(
-                            f"{self.random_word(randint(1, 52))} {self.random_word(randint(1, 52))} {self.random_word(randint(1, 55))}",
+                            f"{self.random_word(randint(1, 52))} {self.random_word(randint(1, 52))} {self.random_word(randint(1, 55), True)}",
                             randint(1, 99), main_home))
                         if randint(0, 10) > 9:
                             ti = j.get_habitants()
