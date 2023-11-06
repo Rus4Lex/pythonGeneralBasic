@@ -70,7 +70,42 @@ class SuperInterface:
         """Enter to info menu"""
 
     @abstractmethod
-    def istat(self):
-        """Get home infos"""
+    def iilist(self):
+        """Full list of inhabitants"""
+
+    @abstractmethod
+    def ialist(self):
+        """Full list of apartments"""
+
+    @abstractmethod
+    def infa(self):
+        """Info from apartment"""
+
+    @abstractmethod
+    def inft(self):
+        """Info from apartments any type (characteristics)"""
+
+
+    # file saving, loading and deleting
+
+    @abstractmethod
+    def mdp(self):
+        """Enter to file menu"""
+    @abstractmethod
+    def mdplist(self):
+        """list of mdp files here"""
+    @abstractmethod
+    def mdpload(self):
+        """load file from list mdp files"""
+    @abstractmethod
+    def mdpsave(self):
+        """save database to new file"""
+    @abstractmethod
+    def mdpres(self):
+        """rewrite file from list mdp files"""
+    @abstractmethod
+    def mdpdel(self):
+        """delete file from list mdp files"""
+
 
 

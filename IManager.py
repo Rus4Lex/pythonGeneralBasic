@@ -1,7 +1,9 @@
 from Nodes import *
 from Interface import Interface
 from SuperInterface import SuperInterface
+from MdpFile import *
 import re
+
 
 class IManager(SuperInterface):
     def __init__(self):
@@ -14,6 +16,8 @@ class IManager(SuperInterface):
 
         self.ui_home = Interface(self)  # home interface
         self.ui_home.help += "---HOME MENU---\n"
+        self.ui_home.add("mdp")
+        self.ui_home.add_help("перейти у файлове меню.")
         self.ui_home.add("finfo")
         self.ui_home.add_help("перейти у розділ статистики.")
         self.ui_home.add("fradd")
@@ -61,8 +65,23 @@ class IManager(SuperInterface):
         self.ui_infos = Interface(self)  # statistics interface
         self.ui_infos.help += "---HOUSE INFO MENU---\n"
         self.ui_infos.onExit = self.ui_home.info
+        self.ui_infos.add("iilist")
+        self.ui_infos.add_help("вивести інформацію про усіх жителів.")
+
 
         self.ui_datbe = Interface(self)  # database interface
+        self.ui_datbe.help += "---FILE MENU---\n"
+        self.ui_datbe.onExit = self.ui_home.info
+        self.ui_datbe.add("mdplist")
+        self.ui_datbe.add_help("показати список збережених файлів.")
+        self.ui_datbe.add("mdpload")
+        self.ui_datbe.add_help("завантажити файл зі списку.")
+        self.ui_datbe.add("mdpsave")
+        self.ui_datbe.add_help("зберегти файл.")
+        self.ui_datbe.add("mdpres")
+        self.ui_datbe.add_help("перезаписати файл зі списку.")
+        self.ui_datbe.add("mdpdel")
+        self.ui_datbe.add_help("видалити файл зі списку.")
 
         self.main_home = HomeNode()
         self.ui_home.walk()
@@ -341,4 +360,125 @@ class IManager(SuperInterface):
     def finfo(self):
         return self.ui_infos.walk()
 
+    def iilist(self):
+        out = "Списки жителів:\nВиселені жителі\n"
+        if len(self.main_home.outrooms) == 0:
+            out += "відсутні.\n"
+        for i in self.main_home.outrooms:
+            out += f"id - {i.id}\n{i.get()[0]}, років {i.get()[1]}\n"
+        out2 = "Заселені жителі\n"
+        floors = self.main_home.get_floors()
+        for fs in floors:
+            for aps in fs.get_apartments(True):
+                for inh in aps:
+                    out2 += f"id - {inh.id}\n{inh.get()[0]}, років {inh.get()[1]}\n"
+        if out2 == "Заселені жителі\n":
+            out2 += "відсутні.\n"
+        return out+out2
 
+
+    def ialist(self):
+        """Full list of apartments"""
+
+    def infa(self):
+        """Info from apartment"""
+
+    def inft(self):
+        """Info from apartments any type (characteristics)"""
+
+    def mdp(self):
+        return self.ui_datbe.walk()
+
+    def mdplist(self):
+        lst = MdpFile.get_files()
+        return "".join([f"{i+1}. {lst[i]}\n" for i in range(len(lst))])
+
+    def mdpload(self):
+        lst = MdpFile.get_files()
+        if len(lst) == 0:
+            return "Файли відсутні."
+        while True:
+            inp = input("Введіть нуль для виходу або\nномер файлу для завантаження\n>>> ")
+            if inp.isdigit():
+                inp = int(inp)
+                if inp == 0:
+                    break
+                elif inp > len(lst):
+                    print("Помилка\nнемає такого файлу!")
+                elif not MdpFile.file_exist(lst[inp-1]):
+                    print("Помилка\nнемає такого файлу!")
+                else:
+                    try:
+                        self.main_home = MdpFile.read(lst[inp-1])
+                        return f"Файл {lst[inp-1]} завантажено."
+                    except Exception as e:
+                        return e
+            else:
+                print("Помилка вводу!")
+        return "Нічого не вибрано."
+
+    def mdpsave(self):
+        while True:
+            inp = input("Підтвердіть для виходу або\nвведіть назву файлу для збереження\n>>> ")
+            if not all([(c in "\\/.") for c in inp]):
+                inp += ".mdp"
+                if len(inp)==0:
+                    return "Нічого не вибрано."
+                elif MdpFile.file_exist(inp):
+                    print("Помилка\nцей файл уже існує!")
+                else:
+                    try:
+                        MdpFile.write(self.main_home, inp)
+                        return f"Файл {inp} збережено."
+                    except Exception as e:
+                        return e
+            else:
+                print("Помилка вводу!")
+
+    def mdpres(self):
+        lst = MdpFile.get_files()
+        if len(lst) == 0:
+            return "Файли відсутні."
+        while True:
+            inp = input("Введіть нуль для виходу або\nномер файлу для збереження\n>>> ")
+            if inp.isdigit():
+                inp = int(inp)
+                if inp == 0:
+                    break
+                elif inp > len(lst):
+                    print("Помилка\nнемає такого файлу!")
+                elif not MdpFile.file_exist(lst[inp - 1]):
+                    print("Помилка\nнемає такого файлу!")
+                else:
+                    try:
+                        MdpFile.write(self.main_home, lst[inp - 1])
+                        return f"Файл {lst[inp - 1]} збережено."
+                    except Exception as e:
+                        return e
+            else:
+                print("Помилка вводу!")
+        return "Нічого не вибрано."
+
+    def mdpdel(self):
+        lst = MdpFile.get_files()
+        if len(lst) == 0:
+            return "Файли відсутні."
+        while True:
+            inp = input("Введіть нуль для виходу або\nномер файлу для видалення\n>>> ")
+            if inp.isdigit():
+                inp = int(inp)
+                if inp == 0:
+                    break
+                elif inp > len(lst):
+                    print("Помилка\nнемає такого файлу!")
+                elif not MdpFile.file_exist(lst[inp - 1]):
+                    print("Помилка\nнемає такого файлу!")
+                else:
+                    try:
+                        MdpFile.file_remove(lst[inp - 1])
+                        return f"Файл {lst[inp - 1]} видалено."
+                    except Exception as e:
+                        return e
+            else:
+                print("Помилка вводу!")
+        return "Нічого не вибрано."
